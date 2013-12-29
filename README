@@ -1,1 +1,15 @@
 This is a minimal acyclic finite-state automata algorithm in Java based on the paper, "Incremental Construction of Minimal Acyclic Finite-State Automata".
+
+It can be used/modified for things like spell checking and autocomplete.
+
+The included word list has 250,000+ words and searching through them is very fast. On a Core i3, I can get about 250,000 lookups in 100ms.
+
+Usage:
+
+Path path = Paths.get("/path/to/wordlist.txt");
+List<String> words = Files.readAllLines(path, StandardCharsets.UTF_8);
+
+Dawg dawg = new Dawg(words);
+
+ if(dawg.search(word))
+    System.out.println("Word found.");
