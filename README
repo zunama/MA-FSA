@@ -2,7 +2,7 @@ This is a minimal acyclic finite-state automata algorithm in Java based on the p
 
 It can be used/modified for things like spell checking and autocomplete.
 
-The included word list has 250,000+ words and searching through them is very fast. On a Core i3, I can get about 250,000 lookups in 100ms.
+The included word list has ~230,000 words and searching through them is very fast. On a Core i3, I can get about ~200,000 searches in ~100ms.
 
 Usage:
 
