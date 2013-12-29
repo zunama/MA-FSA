@@ -11,5 +11,5 @@ List<String> words = Files.readAllLines(path, StandardCharsets.UTF_8);
 
 Dawg dawg = new Dawg(words);
 
- if(dawg.search(word))
+if(dawg.search(word))
     System.out.println("Word found.");
