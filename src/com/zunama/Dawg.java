@@ -7,7 +7,6 @@ public class Dawg {
     private DawgState root;
     private String previousWord = "";
     private Map<String, DawgState> register = new HashMap<String, DawgState>();
-
     private int totalEdges = 0;
 
     public Dawg(List<String> words) {
@@ -20,14 +19,40 @@ public class Dawg {
     public boolean search(String word) {
         DawgState current = root;
 
-        for (Character c : word.toCharArray()){
-            if(current.getEdges().containsKey(c))
+        for (Character c : word.toCharArray()) {
+            if (current.getEdges().containsKey(c))
                 current = current.getEdges().get(c);
             else
                 return false;
         }
 
         return current.isEndWord();
+    }
+
+    public List<String> prefixSearch(String prefix) {
+
+        DawgState current = root;
+        List<String> words = new ArrayList<String>();
+
+        for (char letter : prefix.toLowerCase().toCharArray()) {
+            current = current.getEdges().get(letter);
+        }
+
+        prefixSearch(current, words, prefix.toLowerCase(), "");
+        return words;
+    }
+
+    private void prefixSearch(DawgState state, List<String> words, String prefix, String currentString) {
+        if (state.isEndWord()) {
+            words.add(prefix + currentString);
+        }
+
+        for (Character key : state.getEdges().keySet()) {
+            DawgState nextStateToVist = state.getEdges().get(key);
+            String newString = currentString + key;
+
+            prefixSearch(nextStateToVist, words, prefix, newString);
+        }
     }
 
     private void insertWords(List<String> words) {
@@ -82,8 +107,7 @@ public class Dawg {
         if (register.containsKey(child.toString())) {
             state.getEdges().put(c, register.get(child.toString()));
             totalEdges--;
-        }
-        else {
+        } else {
             register.put(child.toString(), child);
         }
     }
