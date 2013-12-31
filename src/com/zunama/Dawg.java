@@ -9,6 +9,8 @@ public class Dawg {
     private Map<String, DawgState> register = new HashMap<String, DawgState>();
     private int totalEdges = 0;
 
+    private String currentPrefix;
+
     public Dawg(List<String> words) {
         root = new DawgState();
         root.setEndWord(false);
@@ -31,27 +33,55 @@ public class Dawg {
 
     public List<String> prefixSearch(String prefix) {
 
+        if(prefix == null)
+            throw new RuntimeException("Prefix is set to null");
+
         DawgState current = root;
+        currentPrefix = prefix.toLowerCase();
         List<String> words = new ArrayList<String>();
 
         for (char letter : prefix.toLowerCase().toCharArray()) {
-            current = current.getEdges().get(letter);
+            if(current.getEdges().containsKey(letter))
+                current = current.getEdges().get(letter);
+            else
+                return words;
         }
 
-        prefixSearch(current, words, prefix.toLowerCase(), "");
+        prefixSearch(current, words, "");
         return words;
     }
 
-    private void prefixSearch(DawgState state, List<String> words, String prefix, String currentString) {
+    public boolean prefixExist(String prefix) {
+
+        if(prefix == null)
+            throw new RuntimeException("Prefix is set to null");
+
+        DawgState current = root;
+
+        for(char c : prefix.toCharArray()) {
+            if(current.getEdges().containsKey(c))
+                current = current.getEdges().get(c);
+            else
+                return false;
+        }
+
+        return true;
+    }
+
+    public int getTotalEdges() {
+        return totalEdges;
+    }
+
+    private void prefixSearch(DawgState state, List<String> words, String currentString) {
         if (state.isEndWord()) {
-            words.add(prefix + currentString);
+            words.add(currentPrefix + currentString);
         }
 
         for (Character key : state.getEdges().keySet()) {
             DawgState nextStateToVist = state.getEdges().get(key);
             String newString = currentString + key;
 
-            prefixSearch(nextStateToVist, words, prefix, newString);
+            prefixSearch(nextStateToVist, words, newString);
         }
     }
 
@@ -145,9 +175,5 @@ public class Dawg {
         }
 
         return word.substring(0, count);
-    }
-
-    public int getTotalEdges() {
-        return totalEdges;
     }
 }

@@ -1,20 +1,13 @@
 package com.zunama;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Main {
@@ -46,18 +39,10 @@ public class Main {
             System.out.println("Built DAWG in: " + duration + " ms");
 
             startTime = System.currentTimeMillis();
+            String prefix = "jama";
 
-            for(String word : words) {
-                if(!dawg.search(word))
-                    System.out.println("Word not found: " + word);
-            }
+            System.out.println("Prefix exist in DAWG: " + dawg.prefixExist(prefix));
 
-            stopTime = System.currentTimeMillis();
-            duration = stopTime - startTime;
-            System.out.println("Searched " + words.size() + " words in: " + duration + " ms");
-
-            startTime = System.currentTimeMillis();
-            String prefix = "James";
             List<String> foundWords = dawg.prefixSearch(prefix);
 
             stopTime = System.currentTimeMillis();
